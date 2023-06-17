@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ResultModal } from "../../../shared/ui/ResultModal/ResultModal";
+import { useCallback, useState } from "react";
 
 type IFormInputs = {
     About: string;
@@ -16,6 +18,8 @@ const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
 })
 
 export const StepThird = () => {
+
+    const [isOpen, setIsOpen] = useState(true);
 
     const navigate = useNavigate();
 
@@ -37,6 +41,10 @@ export const StepThird = () => {
     const onBack = () => {
         navigate('/second')
     }
+
+    const onCloseModal  = useCallback(() => {
+        setIsOpen(false);
+    }, []);
 
     return (
         <div className={classNames(cls.StepThird, {}, ["page"])}>
@@ -78,6 +86,15 @@ export const StepThird = () => {
 
                 </div>
             </form>
+
+            {
+                isOpen && (
+                    <ResultModal 
+                        isOpen={isOpen}
+                        onClose={onCloseModal}
+                    />
+                )
+            }
         </div>
     )
 };

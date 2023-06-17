@@ -1,0 +1,20 @@
+.add_advantages{
+    width: 44px;
+    height: 44px;
+    color: #5558FA;
+    border: 1.5px solid #5558FA;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    margin-bottom: 24px;
+}
+
+.delete__advantages{
+    width: 15px;
+    height: 15px;
+    background-image: url(./../../../shared/assets/icons/deleteBtn.png);
+    border: none;
+    background-color: transparent;
+    margin-left: 20px;
+    cursor: pointer;
+}

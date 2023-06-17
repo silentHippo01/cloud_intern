@@ -4,41 +4,54 @@ import { Button, ButtonTheme } from "../../../shared/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { DeepPartial, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { useState } from "react";
 
 type IFormInputs = {
-    
+    advantage: string[];
 }
-const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
+// const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
+//     advantage: yup.string()
+//         .required('Обязательное поле'),
+// })
 
-})
-
+type FormData = {
+    advantage: String[];
+};
 
 export const StepSecond = () => {
 
     const navigate = useNavigate();
+    const [advantageList, addAdvantageList] = useState(['', '', ''])
 
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors }
-    } = useForm<IFormInputs>({
-        resolver: yupResolver(schema),
+    } = useForm<FormData>({
         defaultValues: {
-
-        }
+            advantage: [' ', ' ', ' ']
+        },
     })
 
-    const onSubmit: SubmitHandler<IFormInputs> = data => {
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'advantage',
+    });
+
+    const onSubmit = (data: FormData) => {
         console.log(data)
-        navigate('/third')
+        // navigate('/third')
     };
 
     const onBack = () => {
         navigate('/first')
     }
 
-
+    const addAdvantage = () => {
+       
+    }
 
     return (
         <div className={classNames(cls.StepSecond, {}, ["page"])}>
@@ -51,6 +64,38 @@ export const StepSecond = () => {
 
             <form onSubmit={handleSubmit(onSubmit)}>
 
+                <div className='inputForm_wrap'>
+                    <label className='inputForm__label' htmlFor=''>Advantage</label>
+                    <p>{errors.advantage?.message}</p>
+
+                    {
+                        fields.map((field, index) => (
+                            <div key={field.id}>
+                                <input 
+                                    {...register(`advantage.${index}` as const, {required: true})} 
+                                    className='inputForm__adv'
+                                />
+                                <button 
+                                    className={cls.delete__advantages}
+                                    type="button" 
+                                    onClick={() => remove(index)}>
+                                    
+                                </button>
+                            </div>
+                        ))
+                    }
+
+                </div>
+
+                <button
+                    className={cls.add_advantages}
+                    onClick={() =>
+                        append('')
+                      }
+                    type="button"
+                >
+                    &#43;
+                </button>
 
                 <div className="form__buttons">
                     <Button
