@@ -1,12 +1,18 @@
 @import 'variables/global';
 @import 'reset.scss';
+@import 'input.scss';
 @import 'themes/normal.scss';
 @import 'themes/dark.scss';
 
 .app{
     height: 100vh;
-    background-color: var(--bg-color);
+    // background-color: var(--bg-color);
+    background-color: #F4F4F5;
     font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+
 }
 
 .app_modal {

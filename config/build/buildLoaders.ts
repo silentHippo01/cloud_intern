@@ -4,11 +4,24 @@ import webpack from 'webpack';
 
 export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
 
+    const svgLoader = {
+        test: /\.svg$/,
+        use: [
+            {
+                loader: '@svgr/webpack',
+                options: {
+                    native: true,
+                },
+            },
+        ],
+    };
+
     const typescripLoader = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
     }
+
 
     const cssLoader = {
         test: /\.s[ac]ss$/i,
@@ -30,6 +43,7 @@ export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
     }
 
     return [
+        svgLoader,
         typescripLoader,
         cssLoader
     ]

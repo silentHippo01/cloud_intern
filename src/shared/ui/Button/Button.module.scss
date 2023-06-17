@@ -1,0 +1,23 @@
+.Button{
+    width: 79px;
+    height: 44px;
+    border-radius: 4px;
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.primary{
+    background-color: #5558FA;
+    color: #ffffff;
+    border: none;
+}
+
+.outline{
+    background-color: #ffffff;
+    color: #5558FA;
+    border: 1px solid #5558FA;
+}
+
+.disabled{
+    background-color: #878789;
+}

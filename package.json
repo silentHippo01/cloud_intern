@@ -12,9 +12,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
     "@types/node": "^18.14.2",
     "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-server": "^4.7.2",
     "css-loader": "^6.7.3",
@@ -35,6 +35,9 @@
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5"
+    "react-hook-form": "^7.44.3",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.13.0",
+    "yup": "^1.2.0"
   }
 }
