@@ -1,11 +1,14 @@
 import classNames from "classnames";
 import cls from "./MainPage.module.scss";
-import { Input } from "../../../shared/ui/Input/Input";
 import { Button, ButtonTheme } from "../../../shared/ui/Button/Button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
+import { formActions } from "../../../app/FormModel/slice/formSlice";
+import { getFormData } from "../../../app/FormModel/selectors/getFormData";
+import { memo, useEffect, useState } from "react";
 
 type IFormInputs = {
     Phone: string;
@@ -23,7 +26,20 @@ const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
         .required('Обязательное поле'),
 })
 
-export const MainPage = () => {
+
+export const MainPage = memo(() => {
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const data = useSelector(getFormData)
+    // console.log(data);
+    // const [data, setData] = useState({});
+    
+
+    // useEffect(() => {
+    //     setData(useSelector(getFormData));
+    // }, [])
+
     const {
         register,
         handleSubmit,
@@ -31,15 +47,14 @@ export const MainPage = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema),
         defaultValues: {
-            Phone: '+7',
-            // Email: 'tim.jennings@example.com',
+            Phone: data?.Phone,
+            Email: data?.Email,
         }
     })
 
-    const navigate = useNavigate()
-
     const onSubmit: SubmitHandler<IFormInputs> = data => {
         navigate('/first')
+        dispatch(formActions.addData(data));
     };
     return (
         <div className={classNames(cls.MainPage, {}, ["page"])}>
@@ -88,4 +103,4 @@ export const MainPage = () => {
             </div>
         </div>
     );
-};
+});

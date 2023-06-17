@@ -5,6 +5,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, ButtonTheme } from "../../../shared/ui/Button/Button";
+import { ISex } from "../../../app/FormModel/types/FormSchema";
+import { getFormData } from "../../../app/FormModel/selectors/getFormData";
+import { useDispatch, useSelector } from "react-redux";
+import { formActions } from "../../../app/FormModel/slice/formSlice";
 
 type IFormInputs = {
     Nickname: string;
@@ -13,10 +17,6 @@ type IFormInputs = {
     Sex: string;
 }
 
-enum Sex{
-    Man = "Man",
-    Woman = "Woman"
-}
 
 const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
     Nickname: yup
@@ -33,6 +33,9 @@ const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
 })
 
 export const StepFirst = () => {
+
+    const dispatch = useDispatch();
+
     const {
         register,
         handleSubmit,
@@ -47,7 +50,7 @@ export const StepFirst = () => {
     const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<IFormInputs> = data => {
-        console.log(data)
+        dispatch(formActions.addData(data));
         navigate('/second')
     };
 
@@ -106,8 +109,8 @@ export const StepFirst = () => {
                         id="field-sex"
                         {...register('Sex')}
                     >
-                        <option className="select__option" value="man" id="field-sex-option-man">{Sex.Man}</option>
-                        <option className="select__option" value="woman" id="field-sex-option-woman">{Sex.Woman}</option>
+                        <option className="select__option" value="man" id="field-sex-option-man">{ISex.Man}</option>
+                        <option className="select__option" value="woman" id="field-sex-option-woman">{ISex.Woman}</option>
                     </select>
                 </div>
 

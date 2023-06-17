@@ -6,6 +6,8 @@ import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeepPartial, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { formActions } from "../../../app/FormModel/slice/formSlice";
 
 type IFormInputs = {
     advantage: string[];
@@ -17,12 +19,17 @@ type IFormInputs = {
 
 type FormData = {
     advantage: String[];
+    checkbox1: boolean;
+    checkbox2: boolean;
+    checkbox3: boolean;
+    checkbox4: boolean;
+    radioGroup: string;
 };
 
 export const StepSecond = () => {
 
     const navigate = useNavigate();
-    const [advantageList, addAdvantageList] = useState(['', '', ''])
+    const dispatch = useDispatch();
 
     const {
         register,
@@ -31,7 +38,7 @@ export const StepSecond = () => {
         formState: { errors }
     } = useForm<FormData>({
         defaultValues: {
-            advantage: [' ', ' ', ' ']
+            advantage: [' ', ' ', ' '],
         },
     })
 
@@ -41,16 +48,12 @@ export const StepSecond = () => {
     });
 
     const onSubmit = (data: FormData) => {
-        console.log(data)
-        // navigate('/third')
+        dispatch(formActions.addData(data));
+        navigate('/third');
     };
 
     const onBack = () => {
         navigate('/first')
-    }
-
-    const addAdvantage = () => {
-       
     }
 
     return (
@@ -71,15 +74,15 @@ export const StepSecond = () => {
                     {
                         fields.map((field, index) => (
                             <div key={field.id}>
-                                <input 
-                                    {...register(`advantage.${index}` as const, {required: true})} 
+                                <input
+                                    {...register(`advantage.${index}` as const, { required: true })}
                                     className='inputForm__adv'
                                 />
-                                <button 
+                                <button
                                     className={cls.delete__advantages}
-                                    type="button" 
+                                    type="button"
                                     onClick={() => remove(index)}>
-                                    
+
                                 </button>
                             </div>
                         ))
@@ -87,15 +90,108 @@ export const StepSecond = () => {
 
                 </div>
 
+
                 <button
                     className={cls.add_advantages}
                     onClick={() =>
                         append('')
-                      }
+                    }
                     type="button"
                 >
                     &#43;
                 </button>
+
+                <div className={cls.checkboxGroup}>
+                    <p>Checkbox Group</p>
+                    <div>
+                        <input
+                            className={cls.checkbox}
+                            type='checkbox'
+                            id="field-checkbox-group-option-1"
+                            {...register('checkbox1')}
+                        />
+                        <label htmlFor="field-checkbox-group-option-1" className={cls.label}>1</label>
+                    </div>
+
+                    <div>
+                        <input
+                            className={cls.checkbox}
+                            type='checkbox'
+                            id="field-checkbox-group-option-2"
+                            {...register('checkbox2')}
+                        />
+                        <label htmlFor="field-checkbox-group-option-2" className={cls.label}>2</label>
+
+                    </div>
+
+                    <div>
+                        <input
+                            className={cls.checkbox}
+                            type='checkbox'
+                            id="field-checkbox-group-option-3"
+                            {...register('checkbox3')}
+                        />
+                        <label htmlFor="field-checkbox-group-option-3" className={cls.label}>3</label>
+                    </div>
+
+                    <div>
+                        <input
+                            className={cls.checkbox}
+                            type='checkbox'
+                            id="field-checkbox-group-option-4"
+                            {...register('checkbox4')}
+                        />
+                        <label htmlFor="field-checkbox-group-option-4" className={cls.label}>4</label>
+                    </div>
+
+                </div>
+
+                <div className={cls.radioGroup}>
+                    <p>Radio group</p>
+                    <div>
+                        <input
+                            type="radio"
+                            id="field-radio-group-option-1"
+                            name="radioGroup"
+                            value="1"
+                            {...register('radioGroup')}
+                        />
+                        <label htmlFor="field-radio-group-option-1" className={cls.label}>1</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="field-radio-group-option-2"
+                            name="radioGroup"
+                            value="2"
+                            {...register('radioGroup')}
+                        />
+                        <label htmlFor="field-radio-group-option-2" className={cls.label}>2</label>
+                    </div>
+
+                    <div>
+                        <input
+                            type="radio"
+                            id="field-radio-group-option-3"
+                            name="radioGroup"
+                            value="3"
+                            {...register('radioGroup')}
+                        />
+                        <label htmlFor="field-radio-group-option-3" className={cls.label}>3</label>
+                    </div>
+
+                    <div>
+                        <input
+                            type="radio"
+                            id="field-radio-group-option-4"
+                            name="radioGroup"
+                            value="4"
+                            {...register('radioGroup')}
+                        />
+                        <label htmlFor="field-radio-group-option-4" className={cls.label}>4</label>
+                    </div>
+
+                </div>
 
                 <div className="form__buttons">
                     <Button

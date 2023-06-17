@@ -7,6 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ResultModal } from "../../../shared/ui/ResultModal/ResultModal";
 import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { formActions } from "../../../app/FormModel/slice/formSlice";
+import { sendData } from "../../../app/FormModel/services/sendFormData";
 
 type IFormInputs = {
     About: string;
@@ -18,8 +21,8 @@ const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
 })
 
 export const StepThird = () => {
-
     const [isOpen, setIsOpen] = useState(true);
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -34,8 +37,15 @@ export const StepThird = () => {
         }
     })
 
-    const onSubmit: SubmitHandler<IFormInputs> = data => {
-        console.log(data)
+    const onSubmit: SubmitHandler<IFormInputs> = async data => {
+        dispatch(formActions.addData(data));
+        const response = await fetch('https://api.sbercloud.ru/content/v1/bootcamp/frontend', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
     };
 
     const onBack = () => {
@@ -78,7 +88,7 @@ export const StepThird = () => {
                     />
 
                     <Button
-                        text="Далее"
+                        text="Отправить"
                         idBtn="button-start"
                         theme={ButtonTheme.PRIMARY}
                         type="submit"
