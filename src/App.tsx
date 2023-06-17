@@ -16,8 +16,8 @@ export const App: FC<AppProps> = () => {
             <Routes>
                 <Route path="/" element={<MainPage />}/>
                 <Route path="/first" element={<StepFirst />}/>
-                <Route path="/first" element={<StepFirst />}/>
-                <Route path="/first" element={<StepFirst />}/>
+                <Route path="/second" element={<StepSecond />}/>
+                <Route path="/third" element={<StepThird />}/>
             </Routes>
         </div>
     );

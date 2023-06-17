@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { FC, forwardRef } from "react";
 import cls from './Input.module.scss';
-import { FieldValues, UseFormRegister, UseFormRegisterReturn, useFormContext } from "react-hook-form";
-
 
 interface InputProps {
     className?: string;
@@ -31,7 +29,6 @@ export const Input = (props: InputProps)=> {
                 id={id}
                 placeholder={placeholder}
                 {...rest}
-
             />
         </div>
             

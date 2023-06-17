@@ -8,6 +8,7 @@ interface ButtonProps {
     idBtn?: string;
     theme?: string;
     disabled?: boolean;
+    type?: "button" | "submit" | "reset";
     onClick?: () => void;  
 }
 
@@ -24,6 +25,7 @@ export const Button: FC<ButtonProps> = (props) => {
         idBtn,
         theme = ButtonTheme.PRIMARY,
         disabled,
+        type,
         onClick,
         ...otherProps
     } = props;
@@ -40,7 +42,8 @@ export const Button: FC<ButtonProps> = (props) => {
                 className={classNames(cls.Button, mods, [className])}
                 id={idBtn}
                 disabled={disabled}
-                type="submit"
+                type={type}
+                onClick={onClick}
             >
                 {text}
             </button>

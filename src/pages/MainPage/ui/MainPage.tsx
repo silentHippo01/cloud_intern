@@ -3,19 +3,46 @@ import cls from "./MainPage.module.scss";
 import { Input } from "../../../shared/ui/Input/Input";
 import { Button, ButtonTheme } from "../../../shared/ui/Button/Button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type IFormInputs = {
     Phone: string;
     Email: string;
 }
 
+const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
+    Phone: yup
+        .string()
+        .matches(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/, 'Некорректный номер телефона')
+        .required('Обязательное поле'),
+    Email: yup
+        .string()
+        .matches(/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i, 'Некорректный адрес электронной почты')
+        .required('Обязательное поле'),
+})
+
 export const MainPage = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<IFormInputs>({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            Phone: '+7',
+            // Email: 'tim.jennings@example.com',
+        }
     })
 
-    const onSubmit: SubmitHandler<IFormInputs> = data => console.log(data);
+    const navigate = useNavigate()
+
+    const onSubmit: SubmitHandler<IFormInputs> = data => {
+        navigate('/first')
+    };
     return (
-        <div className={classNames(cls.MainPage, {}, [])}>
+        <div className={classNames(cls.MainPage, {}, ["page"])}>
             <div className={cls.About}>
                 <div className={cls.About__avatar}></div>
                 <div className={cls.About__info}>
@@ -32,6 +59,7 @@ export const MainPage = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='inputForm_wrap'>
                         <label className='inputForm__label' htmlFor=''>Телефон</label>
+                        <p>{errors.Phone?.message}</p>
                         <input
                             className='inputForm'
                             placeholder='+7 999 999-99-99'
@@ -41,9 +69,10 @@ export const MainPage = () => {
 
                     <div className='inputForm_wrap'>
                         <label className='inputForm__label' htmlFor=''>Email</label>
+                        <p>{errors.Email?.message}</p>
                         <input
                             className='inputForm'
-                            placeholder='+7 999 999-99-99'
+                            placeholder='tim.jennings@example.com'
                             {...register('Email')}
                         />
                     </div>
