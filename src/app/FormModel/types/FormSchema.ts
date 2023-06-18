@@ -3,23 +3,25 @@ export enum ISex{
     Woman = "Woman"
 }
 
+export interface FormData{
+    Phone?: string;
+    Email?: string;
+    Nickname?: string;
+    Name?: string;
+    Surname?: string;
+    Sex?: ISex;
+    advantage?: String[];
+    checkbox1?: boolean;
+    checkbox2?: boolean;
+    checkbox3?: boolean;
+    checkbox4?: boolean;
+    radioGroup?: string;
+    About?: string;
+}
+
 export interface FormSchema {
-    data: {
-        Phone?: string;
-        Email?: string;
-        Nickname?: string;
-        Name?: string;
-        Surname?: string;
-        Sex?: ISex;
-        advantage?: String[];
-        checkbox1?: boolean;
-        checkbox2?: boolean;
-        checkbox3?: boolean;
-        checkbox4?: boolean;
-        radioGroup?: string;
-        About?: string;
-    },
+    data: FormData,
     isLoading: boolean;
     error: boolean;
-    success: string;
+    success: boolean;
 }

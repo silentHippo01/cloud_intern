@@ -16,8 +16,16 @@
         line-height: 26px;
     }
 
-    &__image{
+    &__image_success{
         background-image: url(../../assets/icons/successIcon.png);
+        width: 80px;
+        height: 80px;
+        margin-bottom: 48px;
+    }
+    
+
+    &__image_failed{
+        background-image: url(../../assets/icons/ErrorIcon.png);
         width: 80px;
         height: 80px;
         margin-bottom: 48px;

@@ -3,22 +3,21 @@ import { FormSchema } from './../types/FormSchema';
 import { ISex } from "./../types/FormSchema";
 import { sendData } from "../services/sendFormData";
 
-
 const initialState: FormSchema = {
     data: {
-        Phone: ' ',
-        Email: ' ',
-        Nickname: ' ',
-        Name: ' ',
-        Surname: ' ',
+        Phone: '',
+        Email: '',
+        Nickname: '',
+        Name: '',
+        Surname: '',
         Sex: ISex.Man,
-        advantage: [' ', ' ', ' '],
+        advantage: ['', '', ''],
         checkbox1: false,
         checkbox2: false,
         checkbox3: false,
         checkbox4: false,
-        radioGroup: ' ',
-        About: ' ',
+        radioGroup: '',
+        About: '',
     },
     error: undefined,
     isLoading: false,
@@ -40,7 +39,7 @@ export const formSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(sendData.fulfilled, (state, action) => {
-                state.success = action.payload;
+                state.success = true;
                 state.isLoading = true;
             })
             .addCase(sendData.rejected, (state, action) => {

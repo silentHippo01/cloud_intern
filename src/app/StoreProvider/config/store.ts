@@ -5,7 +5,7 @@ import { formReducer } from "../../FormModel/slice/formSlice";
 
 export function createReduxStore(initialState?: StateSchema){
     const rootReducers: ReducersMapObject<StateSchema> = {
-        formData: formReducer,
+        form: formReducer,
     }
 
     return configureStore<StateSchema>({
@@ -14,3 +14,5 @@ export function createReduxStore(initialState?: StateSchema){
         preloadedState: initialState,
     })
 }
+
+export type AppDispatch = ReturnType<typeof createReduxStore>['dispatch'];

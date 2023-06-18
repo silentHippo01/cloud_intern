@@ -9,6 +9,7 @@ import { ISex } from "../../../app/FormModel/types/FormSchema";
 import { getFormData } from "../../../app/FormModel/selectors/getFormData";
 import { useDispatch, useSelector } from "react-redux";
 import { formActions } from "../../../app/FormModel/slice/formSlice";
+import { memo } from "react";
 
 type IFormInputs = {
     Nickname: string;
@@ -17,24 +18,29 @@ type IFormInputs = {
     Sex: string;
 }
 
-
 const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
     Nickname: yup
         .string()
+        .max(30)
         .required('Обязательное поле'),
     Name: yup
         .string()
+        .max(50)
+        .matches(/^[a-zA-Zа-яА-Я]+$/, 'Только буквы')
         .required('Обязательное поле'),
     Surname: yup
         .string()
+        .max(50)
+        .matches(/^[a-zA-Zа-яА-Я]+$/, 'Только буквы')
         .required('Обязательное поле'),
     Sex: yup
         .string()
 })
 
-export const StepFirst = () => {
-
+export const StepFirst = memo(() => {
     const dispatch = useDispatch();
+    const formData = useSelector(getFormData);
+    const navigate = useNavigate()
 
     const {
         register,
@@ -43,11 +49,12 @@ export const StepFirst = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema),
         defaultValues: {
-
+            Nickname: formData.Nickname,
+            Name: formData.Name,
+            Surname: formData.Surname,
+            Sex: formData.Sex,
         }
     })
-
-    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<IFormInputs> = data => {
         dispatch(formActions.addData(data));
@@ -131,8 +138,7 @@ export const StepFirst = () => {
                     />
 
                 </div>
-
             </form>
         </div>
     );
-};
+});

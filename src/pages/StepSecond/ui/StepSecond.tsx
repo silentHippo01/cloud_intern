@@ -3,19 +3,10 @@ import cls from './StepSecond.module.scss'
 import { Button, ButtonTheme } from "../../../shared/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
-import { yupResolver } from "@hookform/resolvers/yup";
 import { DeepPartial, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formActions } from "../../../app/FormModel/slice/formSlice";
-
-type IFormInputs = {
-    advantage: string[];
-}
-// const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
-//     advantage: yup.string()
-//         .required('Обязательное поле'),
-// })
+import { getFormData } from "../../../app/FormModel/selectors/getFormData";
 
 type FormData = {
     advantage: String[];
@@ -30,6 +21,7 @@ export const StepSecond = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const formData = useSelector(getFormData);
 
     const {
         register,
@@ -38,7 +30,12 @@ export const StepSecond = () => {
         formState: { errors }
     } = useForm<FormData>({
         defaultValues: {
-            advantage: [' ', ' ', ' '],
+            advantage: formData.advantage,
+            checkbox1: formData.checkbox1,
+            checkbox2: formData.checkbox2,
+            checkbox3: formData.checkbox3,
+            checkbox4: formData.checkbox4,
+            radioGroup: formData.radioGroup,
         },
     })
 
@@ -47,7 +44,7 @@ export const StepSecond = () => {
         name: 'advantage',
     });
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit:SubmitHandler<FormData> = (data) => {
         dispatch(formActions.addData(data));
         navigate('/third');
     };
@@ -66,7 +63,6 @@ export const StepSecond = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <div className='inputForm_wrap'>
                     <label className='inputForm__label' htmlFor=''>Advantage</label>
                     <p>{errors.advantage?.message}</p>

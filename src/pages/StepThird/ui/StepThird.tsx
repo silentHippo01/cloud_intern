@@ -6,10 +6,12 @@ import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ResultModal } from "../../../shared/ui/ResultModal/ResultModal";
-import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo, useCallback, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { formActions } from "../../../app/FormModel/slice/formSlice";
 import { sendData } from "../../../app/FormModel/services/sendFormData";
+import { getFormData } from "../../../app/FormModel/selectors/getFormData";
+import { useAppDispatch } from "../../../shared/hooks/useAppDispatch/useAppDispatch";
 
 type IFormInputs = {
     About: string;
@@ -17,13 +19,14 @@ type IFormInputs = {
 const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
     About: yup
     .string()
+    .max(200)
     .required('Обязательное поле'),
 })
 
-export const StepThird = () => {
-    const [isOpen, setIsOpen] = useState(true);
-    const dispatch = useDispatch();
-
+export const StepThird = memo(() => {
+    const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useAppDispatch();
+    const formData = useSelector(getFormData);
     const navigate = useNavigate();
 
     const {
@@ -33,19 +36,14 @@ export const StepThird = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema),
         defaultValues: {
-
+            About: formData.About,
         }
     })
 
-    const onSubmit: SubmitHandler<IFormInputs> = async data => {
+    const onSubmit: SubmitHandler<IFormInputs> = data => {
         dispatch(formActions.addData(data));
-        const response = await fetch('https://api.sbercloud.ru/content/v1/bootcamp/frontend', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          });
+        dispatch(sendData(formData))
+        setIsOpen(true);
     };
 
     const onBack = () => {
@@ -93,7 +91,6 @@ export const StepThird = () => {
                         theme={ButtonTheme.PRIMARY}
                         type="submit"
                     />
-
                 </div>
             </form>
 
@@ -107,4 +104,4 @@ export const StepThird = () => {
             }
         </div>
     )
-};
+});

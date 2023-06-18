@@ -1,14 +1,14 @@
 import classNames from "classnames";
 import cls from "./MainPage.module.scss";
 import { Button, ButtonTheme } from "../../../shared/ui/Button/Button";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { formActions } from "../../../app/FormModel/slice/formSlice";
 import { getFormData } from "../../../app/FormModel/selectors/getFormData";
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 
 type IFormInputs = {
     Phone: string;
@@ -26,19 +26,10 @@ const schema: yup.ObjectSchema<IFormInputs> = yup.object().shape({
         .required('Обязательное поле'),
 })
 
-
 export const MainPage = memo(() => {
-
     const navigate = useNavigate()
     const dispatch = useDispatch();
-    const data = useSelector(getFormData)
-    // console.log(data);
-    // const [data, setData] = useState({});
-    
-
-    // useEffect(() => {
-    //     setData(useSelector(getFormData));
-    // }, [])
+    const formData = useSelector(getFormData)
 
     const {
         register,
@@ -47,8 +38,8 @@ export const MainPage = memo(() => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema),
         defaultValues: {
-            Phone: data?.Phone,
-            Email: data?.Email,
+            Phone: formData.Phone,
+            Email: formData.Email,
         }
     })
 
@@ -56,6 +47,7 @@ export const MainPage = memo(() => {
         navigate('/first')
         dispatch(formActions.addData(data));
     };
+
     return (
         <div className={classNames(cls.MainPage, {}, ["page"])}>
             <div className={cls.About}>
@@ -69,7 +61,7 @@ export const MainPage = memo(() => {
                     </ul>
                 </div>
             </div>
-
+            
             <div className={cls.MainPage__form}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='inputForm_wrap'>
@@ -98,7 +90,6 @@ export const MainPage = memo(() => {
                         theme={ButtonTheme.PRIMARY}
                         onClick={() => { console.log('hello') }}
                     />
-
                 </form>
             </div>
         </div>
